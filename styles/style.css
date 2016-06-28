@@ -1,0 +1,82 @@
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #012;
+}
+body {
+  margin: 0px 0px 0px 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(120, 200, 255, 0.1);
+  border: 1px solid rgba(120, 200, 255, 0.2);
+  color: rgba(120, 200, 255, 0.8);
+}
+
+.intro_text {
+  width: 350px;
+  margin-left: 480px;
+}
+
+.rings {
+  position: absolute;
+  width: 800px;
+  bottom: -75px;
+  left: 50%;
+  margin-left: -400px;
+}
+.rings .ring__ringlet {
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  margin-left: 50%;
+  left: -200px;
+  position: absolute;
+  bottom: -160px;
+  -webkit-transform: scale(0.1, 0.1);
+          transform: scale(0.1, 0.1);
+  opacity: 0;
+  -webkit-animation: ring-1 3000ms ease-out infinite;
+          animation: ring-1 3000ms ease-out infinite;
+}
+.rings .ring__ringlet:nth-of-type(2) {
+  -webkit-animation-delay: 600ms;
+          animation-delay: 600ms;
+}
+.rings .ring__ringlet:nth-of-type(3) {
+  -webkit-animation-delay: 1200ms;
+          animation-delay: 1200ms;
+}
+
+@-webkit-keyframes ring-1 {
+  0% {
+    -webkit-transform: scale(0.1, 0.1);
+            transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1.2, 1.2);
+            transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes ring-1 {
+  0% {
+    -webkit-transform: scale(0.1, 0.1);
+            transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1.2, 1.2);
+            transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
