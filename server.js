@@ -12,7 +12,7 @@ var parseUrlencoded = bodyParser.urlencoded({
 
 // Creating the website server on port #
 server.listen(port, function() {
-	console.log('Server listening on port %d', port);
+	console.log('Server is up and running sir.');
 });
 
 // Configuring Express
