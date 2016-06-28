@@ -1,7 +1,7 @@
 var express 				= require('express');
 var app 	  				= express();
 var server 					= require('http').createServer(app);
-var port 	  				= process.env.port || 80;
+var port 	  				= process.env.PORT || 80;
 var fs		  				= require('fs');
 var util	  				= require('util');
 var bodyParser 			= require('body-parser');
