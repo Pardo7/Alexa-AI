@@ -1,7 +1,8 @@
 var express 				= require('express');
 var app 	  				= express();
 var server 					= require('http').createServer(app);
-var port 	  				= process.env.port || 3000;
+var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
+var server_host = process.env.YOUR_HOST || '0.0.0.0';
 var fs		  				= require('fs');
 var util	  				= require('util');
 var bodyParser 			= require('body-parser');
@@ -11,7 +12,7 @@ var parseUrlencoded = bodyParser.urlencoded({
 // var alexa 	= require('alexa-app');
 
 // Creating the website server on port #
-server.listen(port, function() {
+server.listen(server_port, server_host, function() {
 	console.log('Server is up and running sir.');
 });
 
