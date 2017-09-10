@@ -1,10 +1,10 @@
 import request from 'request';
 
 // Configuring our post requests
-export const initiateClearInterface = () => {
+export const customRequestOne = () => {
 	request({
-		url: 'http://47e990b7.ngrok.io/clear',
-		qs: { from: 'Sudo Alexa AI', data: 'Clear Preferences' },
+		url: 'https://your.url.io/clear',
+		qs: { from: 'My Alexa AI', data: data },
 		method: 'POST'
 	}, (error, response, body) => {
 		if (error) {
@@ -15,10 +15,10 @@ export const initiateClearInterface = () => {
 	});
 };
 
-export const triggerInputInterface = data => {
+export const customRequestTwo = data => {
 	request({
-		url: 'http://47e990b7.ngrok.io/inverse',
-		qs: { from: 'Sudo Alexa AI', data: data },
+		url: 'https://your.url.io/inverse',
+		qs: { from: 'My Alexa AI', data: data },
 		method: 'POST'
 	}, (error, response, body) => {
 		if (error) {
@@ -29,10 +29,10 @@ export const triggerInputInterface = data => {
 	});
 };
 
-export const initNeural = () => {
+export const customRequestThree = () => {
 	request({
-		url: 'http://47e990b7.ngrok.io/connect',
-		qs: { from: 'Sudo Alexa AI', data: 'init neural' },
+		url: 'https://your.url.io/connect',
+		qs: { from: 'My Alexa AI', data: data },
 		method: 'POST'
 	}, (error, response, body) => {
 		if (error) {
