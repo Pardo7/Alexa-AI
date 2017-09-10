@@ -4,5 +4,7 @@ thumbs.db
 *.log
 node_modules/
 .DS_Store*
+.idea
 Icon?
 ._*
+dist

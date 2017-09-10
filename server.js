@@ -1,14 +1,15 @@
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var request = require('request');
-var port = process.env.PORT || 8088;
-var fs = require('fs');
-var util = require('util');
-var bodyParser = require('body-parser');
-var parseUrlencoded = bodyParser.urlencoded({
+import express from 'express';
+import request from 'request';
+import fs from 'fs';
+import util from 'util';
+import aiUtils from './ai-utils.js'
+import bodyParser from 'body-parser';
+const parseUrlencoded = bodyParser.urlencoded({
     extended: true
 });
+let app = express();
+const server = require('http').createServer(app);
+const port = process.env.PORT || 8088;
 // var alexa 	= require('alexa-app');
 
 // Creating the website server on port #
@@ -30,73 +31,30 @@ app.get('/', function (request, response) {
 });
 
 // Helper function to format the strings so that they dont include spaces and are all in lowercase
-var formatString = function (string) {
-    var lowercaseString = string.toLowerCase();
-    var formattedString = lowercaseString.replace(/\s/g, '');
+const formatString = string => {
+	const lowercaseString = string.toLowerCase();
+	const formattedString = lowercaseString.replace(/\s/g, '');
     return formattedString;
 };
 
-// Configuring our post requests
-var initiateClearInterface = function () {
-    request({
-        url: 'http://47e990b7.ngrok.io/clear',
-        qs: {from: 'Sudo Alexa AI', data: 'Clear Preferences'},
-        method: 'POST'
-    }, function (error, response, body) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(response.statusCode, body);
-        }
-    })
-};
-
-var triggerInputInterface = function(data) {
-  request({
-      url: 'http://47e990b7.ngrok.io/inverse',
-      qs: {from: 'Sudo Alexa AI', data: data},
-      method: 'POST'
-  }, function(error, response, body) {
-      if (error) {
-          console.log(error);
-      } else {
-          console.log(response.statusCode, body);
-      }
-  })
-};
-
-var initNeural = function() {
-    request({
-        url: 'http://47e990b7.ngrok.io/connect',
-        qs: {from: 'Sudo Alexa AI', data: 'init neural'},
-        method: 'POST'
-    }, function(error, response, body) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(response.statusCode, body);
-        }
-    })
-};
-
 // Handles the route for echo api's
-app.post('/api/echo', function (request, response) {
+app.post('/api/echo', (request, response) => {
     console.log("received echo request");
-    var requestBody = "";
+    let requestBody = "";
 
     // Will accumilate the date
-    request.on('data', function (data) {
+    request.on('data', data => {
         requestBody += data;
     });
 
     // Called when all data has been accumilated
-    request.on('end', function () {
-        var responseBody = {};
+    request.on('end', () => {
+        let responseBody = {};
         console.log(requestBody);
         console.log(JSON.stringify(requestBody));
 
         // Parsing the request body for information
-        var jsonData = JSON.parse(requestBody);
+        const jsonData = JSON.parse(requestBody);
         if (jsonData.request.type == 'LaunchRequest') {
 
             // crafting a response
@@ -122,48 +80,48 @@ app.post('/api/echo', function (request, response) {
                 }
             };
         } else if (jsonData.request.type == "IntentRequest") {
-            var outputSpeechText = "";
-            var cardContent = "";
+            let outputSpeechText = "";
+            let cardContent = "";
             if (jsonData.request.intent.name == "ImportAll") {
                 // The Intent "TurnOn" was successfully called
                 // outputSpeechText = "Congrats! You asked to turn on " + jsonData.request.intent.slots.Device.value + " but it was not implemented";
                 outputSpeechText = "will do sir, importing preferences and calibrating control environment";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
             } else if (jsonData.request.intent.name == "NeuralPlanting") {
                 // The Intent "Neural Planting" was successfully called
                 outputSpeechText = "As you wish sir, I’ve also prepared a safety briefing for you to entirely ignore";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
             } else if (jsonData.request.intent.name == "AlrightWhatyaSay") {
                 // The Intent "Neural Planting" was successfully called
                 outputSpeechText = "- I have indeed been uploaded sir.. Sir, there are still TERABYTES of calculations needed for an actual third party neural control.";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
             } else if (jsonData.request.intent.name == "RunBeforeWalk") {
                 // The Intent "Neural Planting" was successfully called
                 outputSpeechText = "As you wish sir.";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
-                initNeural();
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
+                aiUtils.initNeural();
             } else if (jsonData.request.intent.name == "ClearPreferences") {
                 // The Intent "Neural Planting" was successfully called
                 outputSpeechText = "As you wish sir.. clearing all preferences and calibrating the control environment";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
-                initiateClearInterface();
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
+                aiUtils.initiateClearInterface();
             } else if (jsonData.request.intent.name == "MessageInterface") {
                 // The Intent "TurnOff" was successfully called
                 outputSpeechText = "Will do sir, initiating the messaging interface";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
-                triggerInputInterface('messaging interface');
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
+                aiUtils.triggerInputInterface('messaging interface');
             } else if (jsonData.request.intent.name == "InputInterface") {
                 // The Intent "TurnOff" was successfully called
                 outputSpeechText = "Will do sir, initiating the input interface";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
-                triggerInputInterface('neural input interface');
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
+                aiUtils.triggerInputInterface('neural input interface');
             } else if (jsonData.request.intent.name == "TurnOff") {
                 // The Intent "TurnOff" was successfully called
-                outputSpeechText = "Congrats! You asked to turn off " + jsonData.request.intent.slots.Device.value + " but it was not implemented";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
+                outputSpeechText = `Congrats! You asked to turn off ${jsonData.request.intent.slots.Device.value}, but it was not implemented`;
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
             } else {
-                outputSpeechText = jsonData.request.intent.name + " not implemented";
-                cardContent = "Successfully called " + jsonData.request.intent.name + ", but it's not implemented!";
+                outputSpeechText = `${jsonData.request.intent.name} not implemented`;
+                cardContent = `Successfully called ${jsonData.request.intent.name}, but it's not implemented!`;
             }
             responseBody = {
                 "version": "0.1",
@@ -219,7 +177,7 @@ app.post('/api/echo', function (request, response) {
 // 	,"utterances":[ "say the number {1-100|number}" ]
 //   },
 //   function(request,response) {
-//     var number = request.slot('number');
+//     let number = request.slot('number');
 //     response.say("You asked for the number "+number);
 //   }
 // );
