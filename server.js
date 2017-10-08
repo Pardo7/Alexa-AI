@@ -60,7 +60,7 @@ app.post('/api/echo', (request, response) => {
                 "response": {
                     "outputSpeech": {
                         "type": "PlainText",
-                        "text": "Welcome Mr. Pardo, At your service sir."
+                        "text": "Welcome Mr. Name, At your service."
                     },
                     "card": {
                         "type": "Simple",
